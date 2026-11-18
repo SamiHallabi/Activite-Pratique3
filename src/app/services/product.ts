@@ -1,23 +1,19 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Product {
-  products = [
-    { id: 1, name: 'Product 1', price: 10.99 , selected: true},
-    { id: 2, name: 'Product 2', price: 19.99, selected: false },
-    { id: 3, name: 'Product 3', price: 5.99, selected: true },
-  ];
+
+  constructor(private http: HttpClient) {
+  }
 
   getAllProducts() {
-    return this.products;
+    return this.http.get<Array<any>>('http://localhost:8083/products');
   }
 
   deleteProduct(product: any) {
-    let v = confirm(`Are you sure you want to delete ${product.name}?`);
-    if (v) {
-      this.products = this.products.filter(p => p.id !== product.id);
-    }
+    return this.http.delete(`http://localhost:8083/products/` + product.id);
   }
 }
